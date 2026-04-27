@@ -1,124 +1,111 @@
-# 👨‍💼 Employee Attrition ML Pipeline
+# Employee Attrition Analysis & Prediction
 
-## 📌 Project Overview
-This project is an end-to-end machine learning pipeline designed to analyze and predict employee attrition using HR data. The goal is to identify key factors influencing employee turnover and provide data-driven insights to improve employee retention strategies.
+A machine learning project to analyze employee attrition patterns and build predictive models to identify employees likely to leave an organization.
 
----
+## Project Overview
 
-## 🎯 Problem Statement
-Employee attrition is a major challenge for organizations, leading to increased hiring costs and loss of skilled talent. This project aims to analyze HR data to understand attrition patterns, identify key drivers, and build a machine learning model to predict whether an employee will leave the company.
+Employee attrition is a major business problem affecting workforce stability and productivity. This project performs end-to-end data analysis and machine learning to understand and predict employee attrition.
 
----
+## Objectives
 
-## 📊 Dataset
-- IBM HR Analytics Employee Attrition Dataset (Kaggle)
-- Features include:
-  - Age, Gender, Department
-  - Job Role, Monthly Income
-  - Job Satisfaction, Overtime
-  - Work Experience, Education
+- Analyze employee attrition patterns using HR data
+- Perform exploratory data analysis (EDA)
+- Identify key factors influencing attrition
+- Build machine learning classification models
+- Compare multiple models (Random Forest and XGBoost)
+- Evaluate performance using standard metrics
+- Extract actionable business insights
 
----
+## Tech Stack
 
-## 🛠️ Tech Stack
 - Python
-- Pandas, NumPy
+- Pandas
+- NumPy
 - Scikit-learn
-- Matplotlib, Seaborn
-- Joblib
+- XGBoost
+- Matplotlib
+- Seaborn
+- Jupyter Notebook
 
----
+## Project Structure
 
-## 🔄 Project Workflow
-1. Data Collection  
-2. Data Cleaning & Preprocessing  
-3. Exploratory Data Analysis (EDA)  
-4. Feature Engineering  
-5. Model Building (Classification)  
-6. Model Evaluation  
-7. Insights & Interpretation  
-
----
-
-## 📁 Project Structure
 Employee-Attrition-Analysis/
 │
 ├── data/
 │   ├── raw/
-│   └── processed/
+│   ├── processed/
 │
 ├── notebooks/
 │   ├── 01_eda.ipynb
-│   ├── 02_model_building.ipynb
+│   ├── 02_baseline_model.ipynb
+│   ├── 03_model_comparison.ipynb
 │
 ├── src/
 │   ├── preprocessing.py
 │   ├── eda.py
-│   ├── model.py
 │   ├── utils.py
+│   ├── models/
+│   │   ├── random_forest.py
+│   │   ├── xgboost_model.py
+│   │   ├── tuning.py
+│   │   └── evaluate.py
 │
-├── models/
-│   └── attrition_model.pkl
+├── outputs/
+│   ├── plots/
+│   ├── reports/
 │
 ├── main.py
 ├── requirements.txt
 └── README.md
 
----
+## Workflow
 
-## 🤖 Machine Learning Model
-- Algorithm: Random Forest Classifier  
-- Task: Binary Classification (Attrition: Yes/No)
+1. Data Collection  
+2. Data Cleaning and Preprocessing  
+3. Exploratory Data Analysis (EDA)  
+4. Feature Engineering  
+5. Model Training  
+   - Random Forest  
+   - XGBoost  
+6. Model Evaluation and Comparison  
+7. Insights Generation  
 
-### Evaluation Metrics:
+## Model Evaluation Metrics
+
 - Accuracy  
 - Precision  
 - Recall  
-- F1-score  
+- F1 Score  
+- ROC-AUC Score  
+- Precision-Recall Curve  
 
----
+## Key Insights
 
-## 📊 Key Insights
-- Employees working overtime are more likely to leave  
-- Lower monthly income increases attrition risk  
-- Job satisfaction strongly impacts retention  
-- Certain departments show higher attrition rates  
+- Overtime is one of the strongest predictors of attrition  
+- Younger employees show higher attrition probability  
+- Job satisfaction significantly impacts retention  
+- Certain departments show higher turnover rates  
 
----
+## Future Improvements
 
-## 🚀 How to Run This Project
+- Deploy using Streamlit dashboard  
+- Add SHAP-based model explainability  
+- Hyperparameter tuning using Optuna  
+- Build real-time prediction API  
 
-### 1. Clone the repository
-git clone https://github.com/Hiya2255-sudo/Employee-attrition-ml-pipeline.git  
-cd Employee-attrition-ml-pipeline  
+## How to Run This Project
 
-### 2. Install dependencies
+git clone https://github.com/your-username/Employee-Attrition-Analysis.git  
+cd Employee-Attrition-Analysis  
 pip install -r requirements.txt  
-
-### 3. Run the pipeline
 python main.py  
 
----
+## Author
 
-## 📈 Results
-- Built an end-to-end ML pipeline for employee attrition prediction  
-- Identified key HR factors affecting employee turnover  
-- Created reusable modular code structure  
-
----
-
-## 💡 Future Improvements
-- Deploy using Streamlit or Flask  
-- Add SHAP explainability for model interpretation  
-- Improve model with XGBoost / LightGBM  
-- Build real-time prediction dashboard  
-
----
-
-## 👨‍💻 Author
 Hiya Dutta  
+B.Tech Computer Science and Engineering  
+KIIT University  
 
----
+## Note
 
-## ⭐ If you like this project
-Give this repository a star ⭐ on GitHub!
+This project demonstrates a complete machine learning workflow including data analysis, model building, evaluation, and business insight generation.sitory a star ⭐ on GitHub!
