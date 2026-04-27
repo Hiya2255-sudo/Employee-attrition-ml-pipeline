@@ -1,37 +1,63 @@
-
-#preprocessing.py  Data cleaning and transformation
+# preprocessing.py  Data cleaning and transformation
 
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-def preprocess_data(path):
+
+def build_preprocessor(X: pd.DataFrame):
+    numeric_cols = X.select_dtypes(include=['int64', 'float64']).columns.tolist()
+    categorical_cols = X.select_dtypes(include=['object', 'category']).columns.tolist()
+
+    numeric_pipeline = Pipeline(
+        steps=[
+            ('imputer', SimpleImputer(strategy='median')),
+            ('scaler', StandardScaler()),
+        ]
+    )
+
+    categorical_pipeline = Pipeline(
+        steps=[
+            ('imputer', SimpleImputer(strategy='most_frequent')),
+            ('onehot', OneHotEncoder(drop='first', handle_unknown='ignore', sparse_output=False)),
+        ]
+    )
+
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ('num', numeric_pipeline, numeric_cols),
+            ('cat', categorical_pipeline, categorical_cols),
+        ],
+        remainder='drop',
+    )
+
+    return preprocessor, numeric_cols, categorical_cols
+
+
+def preprocess_data(path: str):
     df = pd.read_csv(path)
 
-    # Drop useless columns
-    df.drop(columns=['EmployeeID'], inplace=True, errors='ignore')
+    if 'EmployeeID' in df.columns:
+        df.drop(columns=['EmployeeID'], inplace=True, errors='ignore')
 
-    # Handle missing values
-    num_cols = df.select_dtypes(include=['int64', 'float64']).columns
-    df[num_cols] = df[num_cols].fillna(df[num_cols].median())
-
-    cat_cols = df.select_dtypes(include=['object']).columns
-    for col in cat_cols:
-        df[col] = df[col].fillna(df[col].mode()[0])
-
-    # Encode target
     df['Attrition'] = df['Attrition'].map({'Yes': 1, 'No': 0})
 
-    # Binary encoding
-    if 'OverTime' in df.columns:
-        df['OverTime'] = df['OverTime'].map({'No': 0, 'Yes': 1})
+    X = df.drop(columns=['Attrition'])
+    y = df['Attrition']
 
-    # One-hot encoding remaining categorical
-    df = pd.get_dummies(df, drop_first=True)
+    preprocessor, numeric_cols, categorical_cols = build_preprocessor(X)
+    X_transformed = preprocessor.fit_transform(X)
 
-    # Feature scaling for original numeric columns only
-    scaler = StandardScaler()
-    numeric_features = [col for col in num_cols if col != 'Attrition' and col in df.columns]
-    if numeric_features:
-        df[numeric_features] = scaler.fit_transform(df[numeric_features])
+    feature_names = []
+    if numeric_cols:
+        feature_names.extend(numeric_cols)
+    if categorical_cols:
+        onehot = preprocessor.named_transformers_['cat']['onehot']
+        feature_names.extend(onehot.get_feature_names_out(categorical_cols).tolist())
 
-    return df
+    processed_df = pd.DataFrame(X_transformed, columns=feature_names, index=df.index)
+    processed_df['Attrition'] = y
+
+    return processed_df, preprocessor, X, y
